@@ -1697,6 +1697,49 @@ section:nth-child(even) {
     .language-switcher {
         margin-left: 0;
         margin-top: 1rem;
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+        padding: 1rem 0;
+        border-top: 1px solid #e5e7eb;
+    }
+    
+    .lang-btn {
+        padding: 0.8rem 1.6rem;
+        font-size: 1rem;
+        min-width: 80px;
+        text-align: center;
+    }
+    
+    .flag {
+        margin-right: 0.8rem;
+        font-size: 1.2rem;
+    }
+    
+    /* Hide desktop language switcher on mobile */
+    .language-switcher:not(.mobile) {
+        display: none !important;
+    }
+    
+    /* Show mobile language switcher */
+    .mobile-language-switcher {
+        display: block !important;
+        width: 100%;
+        text-align: center;
+        padding: 1rem 0;
+        border-top: 1px solid #e5e7eb;
+        margin-top: 1rem;
+    }
+}
+
+/* Hide mobile language switcher on desktop */
+@media (min-width: 769px) {
+    .mobile-language-switcher {
+        display: none !important;
+    }
+    
+    .language-switcher.mobile {
+        display: none !important;
     }
 }
 
