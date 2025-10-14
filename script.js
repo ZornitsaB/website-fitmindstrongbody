@@ -2,10 +2,16 @@
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        console.log('Hamburger clicked!');
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        console.log('Classes toggled:', hamburger.classList.contains('active'), navMenu.classList.contains('active'));
+    });
+} else {
+    console.log('Hamburger or navMenu not found:', hamburger, navMenu);
+}
 
 // Hero section button functionality
 document.addEventListener('DOMContentLoaded', () => {
