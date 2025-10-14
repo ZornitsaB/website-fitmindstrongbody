@@ -339,9 +339,9 @@ const debouncedScrollHandler = debounce(() => {
 
 window.addEventListener('scroll', debouncedScrollHandler);
 
-// Add loading animation for images (excluding profile image)
+// Add loading animation for images (excluding profile image and language flags)
 document.addEventListener('DOMContentLoaded', () => {
-    const images = document.querySelectorAll('img:not(.profile-image)');
+    const images = document.querySelectorAll('img:not(.profile-image):not(.language-switcher img)');
     images.forEach(img => {
         img.addEventListener('load', function() {
             this.style.opacity = '1';
@@ -357,6 +357,51 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.visibility = 'visible';
         img.style.display = 'block';
     });
+    
+    // Ensure language switcher flags are always visible
+    const languageFlags = document.querySelectorAll('.language-switcher .flag');
+    languageFlags.forEach(flag => {
+        flag.style.opacity = '1';
+        flag.style.visibility = 'visible';
+        flag.style.display = 'inline';
+    });
+    
+    // Ensure language switcher buttons are always visible
+    const languageButtons = document.querySelectorAll('.language-switcher .lang-btn');
+    languageButtons.forEach(btn => {
+        btn.style.opacity = '1';
+        btn.style.visibility = 'visible';
+        btn.style.display = 'flex';
+    });
+    
+    // Ensure language switcher container is always visible
+    const languageSwitcher = document.querySelector('.language-switcher');
+    if (languageSwitcher) {
+        languageSwitcher.style.opacity = '1';
+        languageSwitcher.style.visibility = 'visible';
+        languageSwitcher.style.display = 'flex';
+    }
+    
+    // Continuously ensure language switcher stays visible
+    setInterval(() => {
+        const flags = document.querySelectorAll('.language-switcher .flag');
+        flags.forEach(flag => {
+            if (flag.style.opacity !== '1') {
+                flag.style.opacity = '1';
+                flag.style.visibility = 'visible';
+                flag.style.display = 'inline';
+            }
+        });
+        
+        const buttons = document.querySelectorAll('.language-switcher .lang-btn');
+        buttons.forEach(btn => {
+            if (btn.style.opacity !== '1') {
+                btn.style.opacity = '1';
+                btn.style.visibility = 'visible';
+                btn.style.display = 'flex';
+            }
+        });
+    }, 1000); // Check every second
 });
 
 // Accessibility improvements
