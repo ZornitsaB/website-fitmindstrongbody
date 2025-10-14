@@ -29,19 +29,43 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         
+        // Safari detection
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        console.log('Browser detected:', isSafari ? 'Safari' : 'Other');
+        
         // Hamburger click/touch events
         hamburger.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Hamburger clicked');
             toggleMenu();
         });
         
-        // Touch events for mobile
-        hamburger.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleMenu();
-        }, { passive: false });
+        // Safari-specific touch events
+        if (isSafari) {
+            hamburger.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Safari touchstart');
+                toggleMenu();
+            }, { passive: false });
+            
+            // Safari also needs touchend sometimes
+            hamburger.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Safari touchend');
+                toggleMenu();
+            }, { passive: false });
+        } else {
+            // Other browsers
+            hamburger.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Touch start');
+                toggleMenu();
+            }, { passive: false });
+        }
         
         // Close menu when clicking on navigation links
         navLinks.forEach(link => {
@@ -85,6 +109,20 @@ document.addEventListener('DOMContentLoaded', () => {
         hamburger.style.webkitTouchCallout = 'none';
         hamburger.style.webkitUserSelect = 'none';
         hamburger.style.userSelect = 'none';
+        
+        // Safari-specific additional fixes
+        if (isSafari) {
+            hamburger.style.webkitTapHighlightColor = 'transparent';
+            hamburger.style.webkitTouchCallout = 'none';
+            hamburger.style.webkitUserSelect = 'none';
+            
+            // Add mousedown event for Safari
+            hamburger.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                console.log('Safari mousedown');
+                toggleMenu();
+            });
+        }
         
         console.log('Mobile menu initialized successfully');
     } else {

@@ -2480,10 +2480,25 @@ img[src="portrait.jpg"] {
         -webkit-touch-callout: none !important;
         -webkit-user-select: none !important;
         -webkit-tap-highlight-color: transparent !important;
+        cursor: pointer !important;
+        pointer-events: auto !important;
+        position: relative !important;
+        z-index: 1004 !important;
     }
     
     .hamburger span {
         -webkit-tap-highlight-color: transparent !important;
+        pointer-events: none !important;
+    }
+    
+    .nav-menu {
+        -webkit-transform: translateZ(0) !important;
+        -webkit-backface-visibility: hidden !important;
+    }
+    
+    .nav-menu.active {
+        left: 0 !important;
+        -webkit-transform: translateZ(0) !important;
     }
 }
 
