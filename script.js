@@ -71,6 +71,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Hero Video Autoplay Fix
+document.addEventListener('DOMContentLoaded', () => {
+    const heroVideo = document.querySelector('.hero-video');
+    
+    if (heroVideo) {
+        // Force video to play
+        heroVideo.muted = true;
+        heroVideo.playsInline = true;
+        
+        // Try to play the video
+        const playPromise = heroVideo.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log('Video is playing');
+            }).catch(error => {
+                console.log('Video autoplay failed, trying again:', error);
+                // Try again after a short delay
+                setTimeout(() => {
+                    heroVideo.play().catch(e => console.log('Second attempt failed:', e));
+                }, 100);
+            });
+        }
+        
+        // Ensure video loops
+        heroVideo.loop = true;
+    }
+});
+
 // Hero section button functionality
 document.addEventListener('DOMContentLoaded', () => {
     const startJourneyBtn = document.querySelector('.hero-buttons .btn-primary');
