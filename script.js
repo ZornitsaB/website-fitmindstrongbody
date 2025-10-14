@@ -1,52 +1,94 @@
-// Mobile Navigation Toggle - Safari and Chrome Compatible
+// Mobile Navigation Toggle - COMPLETE REWRITE
 document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-menu a');
 
     if (hamburger && navMenu) {
-        const toggleMenu = () => {
-            console.log('Hamburger clicked!');
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-            console.log('Classes toggled:', hamburger.classList.contains('active'), navMenu.classList.contains('active'));
+        console.log('Mobile menu elements found');
+        
+        const openMenu = () => {
+            console.log('Opening menu');
+            hamburger.classList.add('active');
+            navMenu.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
         };
         
-        // Safari-specific fixes
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        const isChrome = /chrome/i.test(navigator.userAgent);
+        const closeMenu = () => {
+            console.log('Closing menu');
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        };
         
-        if (isSafari) {
-            // Safari needs touchstart instead of touchend
-            hamburger.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                toggleMenu();
-            }, { passive: false });
-        }
+        const toggleMenu = () => {
+            if (navMenu.classList.contains('active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        };
         
-        if (isChrome) {
-            // Chrome mobile needs both touch and click events
-            hamburger.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                toggleMenu();
-            }, { passive: false });
-        }
-        
-        // Universal click event for all browsers
+        // Hamburger click/touch events
         hamburger.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             toggleMenu();
         });
         
-        // Ensure hamburger is clickable on all browsers
+        // Touch events for mobile
+        hamburger.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMenu();
+        }, { passive: false });
+        
+        // Close menu when clicking on navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                console.log('Nav link clicked, closing menu');
+                console.log('Menu state before close:', navMenu.classList.contains('active'));
+                closeMenu();
+                console.log('Menu state after close:', navMenu.classList.contains('active'));
+                
+                // Force close if still open
+                setTimeout(() => {
+                    if (navMenu.classList.contains('active')) {
+                        console.log('Force closing menu - still open after 100ms');
+                        hamburger.classList.remove('active');
+                        navMenu.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                }, 100);
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && 
+                !hamburger.contains(e.target) && 
+                !navMenu.contains(e.target)) {
+                closeMenu();
+            }
+        });
+        
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+        
+        // Ensure hamburger is clickable
         hamburger.style.pointerEvents = 'auto';
         hamburger.style.cursor = 'pointer';
         hamburger.style.webkitTouchCallout = 'none';
         hamburger.style.webkitUserSelect = 'none';
         hamburger.style.userSelect = 'none';
         
-        console.log('Hamburger menu initialized for:', isSafari ? 'Safari' : isChrome ? 'Chrome' : 'Other browser');
+        console.log('Mobile menu initialized successfully');
     } else {
-        console.log('Hamburger or navMenu not found:', hamburger, navMenu);
+        console.log('Mobile menu elements NOT found:', hamburger, navMenu);
     }
 });
 
@@ -82,13 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
 
 // Navbar background on scroll
 window.addEventListener('scroll', () => {
@@ -130,8 +165,10 @@ filterButtons.forEach(button => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
+        
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
+            // Close mobile menu if it's open (this is handled by the main menu code above)
             target.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'

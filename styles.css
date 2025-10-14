@@ -1550,24 +1550,6 @@ section:nth-child(even) {
         display: flex;
     }
 
-
-    .nav-menu {
-        position: fixed;
-        left: -100%;
-        top: 70px;
-        flex-direction: column;
-        background-color: white;
-        width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-        padding: 2rem 0;
-    }
-
-    .nav-menu.active {
-        left: 0;
-    }
-
     .hero-container {
         grid-template-columns: 1fr;
         text-align: center;
@@ -1873,8 +1855,13 @@ html {
     }
     
     .nav-menu.active {
-        left: 0;
-        z-index: 1000;
+        left: 0 !important;
+        z-index: 1000 !important;
+    }
+    
+    /* FORCE MENU TO CLOSE WHEN NOT ACTIVE */
+    .nav-menu:not(.active) {
+        left: -100% !important;
     }
     
     .nav-menu li {
