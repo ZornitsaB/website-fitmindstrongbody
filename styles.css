@@ -1928,6 +1928,11 @@ html {
     .nav-container .language-switcher {
         margin-right: -90px !important;
         margin-left: auto !important;
+        pointer-events: none !important;
+    }
+    
+    .nav-container .language-switcher .lang-btn {
+        pointer-events: auto !important;
     }
     
     .language-switcher .lang-btn {
@@ -2008,6 +2013,14 @@ html {
         width: 25px !important;
         position: relative !important;
         z-index: 1003 !important;
+        pointer-events: auto !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
     }
     
     .hamburger span {
@@ -2472,4 +2485,25 @@ img[src="portrait.jpg"] {
     display: block !important;
     width: 100% !important;
     object-fit: cover !important;
+}
+
+/* Safari Mobile specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .hamburger {
+        -webkit-touch-callout: none !important;
+        -webkit-user-select: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    
+    .hamburger span {
+        -webkit-tap-highlight-color: transparent !important;
+    }
+}
+
+/* Chrome Mobile specific fixes */
+@supports (-webkit-appearance: none) {
+    .hamburger {
+        -webkit-appearance: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
 }

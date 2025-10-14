@@ -1,17 +1,54 @@
-// Mobile Navigation Toggle
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
+// Mobile Navigation Toggle - Safari and Chrome Compatible
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
 
-if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
-        console.log('Hamburger clicked!');
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        console.log('Classes toggled:', hamburger.classList.contains('active'), navMenu.classList.contains('active'));
-    });
-} else {
-    console.log('Hamburger or navMenu not found:', hamburger, navMenu);
-}
+    if (hamburger && navMenu) {
+        const toggleMenu = () => {
+            console.log('Hamburger clicked!');
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            console.log('Classes toggled:', hamburger.classList.contains('active'), navMenu.classList.contains('active'));
+        };
+        
+        // Safari-specific fixes
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isChrome = /chrome/i.test(navigator.userAgent);
+        
+        if (isSafari) {
+            // Safari needs touchstart instead of touchend
+            hamburger.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                toggleMenu();
+            }, { passive: false });
+        }
+        
+        if (isChrome) {
+            // Chrome mobile needs both touch and click events
+            hamburger.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                toggleMenu();
+            }, { passive: false });
+        }
+        
+        // Universal click event for all browsers
+        hamburger.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleMenu();
+        });
+        
+        // Ensure hamburger is clickable on all browsers
+        hamburger.style.pointerEvents = 'auto';
+        hamburger.style.cursor = 'pointer';
+        hamburger.style.webkitTouchCallout = 'none';
+        hamburger.style.webkitUserSelect = 'none';
+        hamburger.style.userSelect = 'none';
+        
+        console.log('Hamburger menu initialized for:', isSafari ? 'Safari' : isChrome ? 'Chrome' : 'Other browser');
+    } else {
+        console.log('Hamburger or navMenu not found:', hamburger, navMenu);
+    }
+});
 
 // Hero section button functionality
 document.addEventListener('DOMContentLoaded', () => {
