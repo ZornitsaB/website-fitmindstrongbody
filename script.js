@@ -29,11 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         
-        // Safari detection
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        console.log('Browser detected:', isSafari ? 'Safari' : 'Other');
-        
-        // Hamburger click/touch events
+        // Simple click handler only
         hamburger.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -41,49 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleMenu();
         });
         
-        // Safari-specific touch events
-        if (isSafari) {
-            hamburger.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Safari touchstart');
-                toggleMenu();
-            }, { passive: false });
-            
-            // Safari also needs touchend sometimes
-            hamburger.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Safari touchend');
-                toggleMenu();
-            }, { passive: false });
-        } else {
-            // Other browsers
-            hamburger.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Touch start');
-                toggleMenu();
-            }, { passive: false });
-        }
-        
         // Close menu when clicking on navigation links
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 console.log('Nav link clicked, closing menu');
-                console.log('Menu state before close:', navMenu.classList.contains('active'));
                 closeMenu();
-                console.log('Menu state after close:', navMenu.classList.contains('active'));
-                
-                // Force close if still open
-                setTimeout(() => {
-                    if (navMenu.classList.contains('active')) {
-                        console.log('Force closing menu - still open after 100ms');
-                        hamburger.classList.remove('active');
-                        navMenu.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                }, 100);
             });
         });
         
@@ -106,23 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ensure hamburger is clickable
         hamburger.style.pointerEvents = 'auto';
         hamburger.style.cursor = 'pointer';
-        hamburger.style.webkitTouchCallout = 'none';
-        hamburger.style.webkitUserSelect = 'none';
-        hamburger.style.userSelect = 'none';
-        
-        // Safari-specific additional fixes
-        if (isSafari) {
-            hamburger.style.webkitTapHighlightColor = 'transparent';
-            hamburger.style.webkitTouchCallout = 'none';
-            hamburger.style.webkitUserSelect = 'none';
-            
-            // Add mousedown event for Safari
-            hamburger.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-                console.log('Safari mousedown');
-                toggleMenu();
-            });
-        }
         
         console.log('Mobile menu initialized successfully');
     } else {
