@@ -191,6 +191,8 @@ function sendEmail() {
     const name = document.getElementById('contact-name').value;
     const email = document.getElementById('contact-email').value;
     const phone = document.getElementById('contact-phone').value;
+    const heard = document.getElementById('contact-heard').value;
+    const otherDetails = document.getElementById('contact-other-details').value;
     const goals = document.getElementById('contact-goals').value;
     const problems = document.getElementById('contact-problems').value;
     const challenge = document.getElementById('contact-challenge').value;
@@ -198,8 +200,14 @@ function sendEmail() {
     const story = document.getElementById('contact-story').value;
     
     // Validation
-    if (!name || !email || !phone || !goals || !problems || !challenge || !timing || !story) {
+    if (!name || !email || !phone || !heard || !goals || !problems || !challenge || !timing || !story) {
         alert('Моля, попълнете всички полета / Please fill in all fields');
+        return;
+    }
+    
+    // If "Other" is selected, validate the details field
+    if (heard === 'Other' && !otherDetails) {
+        alert('Моля, опишете от къде научихте за мен / Please describe where you heard about me');
         return;
     }
     
@@ -210,10 +218,16 @@ function sendEmail() {
     submitButton.disabled = true;
     
     // Prepare email content
+    let heardText = heard;
+    if (heard === 'Other' && otherDetails) {
+        heardText = `Other: ${otherDetails}`;
+    }
+    
     const emailContent = `
 Име / Name: ${name}
 Email: ${email}
 Телефон / Phone: ${phone}
+От къде научи за мен / Where did you hear about me: ${heardText}
 
 Цели / Goals:
 ${goals}
@@ -249,6 +263,26 @@ ${story}
         submitButton.disabled = false;
     }, 1000);
 }
+
+// Show/hide "Other" text field when dropdown changes
+document.addEventListener('DOMContentLoaded', () => {
+    const heardDropdown = document.getElementById('contact-heard');
+    const otherTextField = document.getElementById('contact-other-text');
+    const otherTextArea = document.getElementById('contact-other-details');
+    
+    if (heardDropdown && otherTextField && otherTextArea) {
+        heardDropdown.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                otherTextField.style.display = 'block';
+                otherTextArea.setAttribute('required', 'required');
+            } else {
+                otherTextField.style.display = 'none';
+                otherTextArea.removeAttribute('required');
+                otherTextArea.value = ''; // Clear the value when hidden
+            }
+        });
+    }
+});
 
 // Form submission handling (for backward compatibility)
 const contactForm = document.querySelector('.contact-form');

@@ -712,6 +712,18 @@ you
                     <div class="form-group">
                         <textarea id="contact-story" placeholder="Разкажи ми твоята история..." rows="5" required></textarea>
                     </div>
+                    <div class="form-group">
+                        <select id="contact-heard" required>
+                            <option value="">От къде научи за мен?</option>
+                            <option value="Facebook Ad">Facebook реклама</option>
+                            <option value="Instagram Ad">Instagram реклама</option>
+                            <option value="Friend">Приятел/Приятелка</option>
+                            <option value="Other">Друго</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="contact-other-text" style="display: none;">
+                        <textarea id="contact-other-details" placeholder="Моля, опиши от къде научи за мен..." rows="2"></textarea>
+                    </div>
                     <button type="button" class="btn btn-primary" onclick="sendEmail()">Изпрати съобщение</button>
                 </form>
             </div>
